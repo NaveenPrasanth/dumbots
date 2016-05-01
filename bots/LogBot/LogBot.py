@@ -3,7 +3,7 @@
 #
 # Simple Bot to reply to Telegram messages
 
-from telegram.ext import Updater,CommandHandler,MessageHandler,filters
+from telegram.ext import Updater,CommandHandler,MessageHandler,Filters
 from telegram import ReplyKeyboardMarkup
 import logging
 import os
@@ -54,7 +54,7 @@ def reply(bot, update):
         directory = update.message.chat.title
         if not os.path.exists(directory):
             os.makedirs(directory)
-        file = open("./"+directory+"/"+category+".txt",'a')
+        file = open("/home/debian/dumbots/bots/LogBot/"+directory+"/"+category+".txt",'a')
 
         file.write("[ "+str(rmessage["date"])+" ]"+str(rmessage["uname"])+" : "+rmessage["message"])
         file.write("\n")
@@ -71,11 +71,11 @@ def reply(bot, update):
         directory = update.message.chat.title
         if not os.path.exists(directory):
             os.makedirs(directory)
-        file = open("./"+directory+"/"+category+".txt",'a')
+        file = open("/home/debian/dumbots/bots/LogBot/"+directory+"/"+category+".txt",'a')
         titletime = str(update.message.date)
         file.write("\n"+"----------"+titletime+"----------- \n")
         file.close()
-        reply_msg = " I will start the log of "+category+" discussion "+str(update.message.chat.title)
+        reply_msg = " I will start the log of "+category+" discussion for group "+str(update.message.chat.title)
         bot.sendMessage(update.message.chat_id, text=reply_msg)
 
         status = "started"
@@ -96,7 +96,7 @@ def reply(bot, update):
         directory = update.message.chat.title
         if not os.path.exists(directory):
             os.makedirs(directory)
-        file = open("./"+directory+"/general.txt",'a')
+        file = open("/home/debian/dumbots/bots/LogBot/"+directory+"/general.txt",'a')
 
         file.write("[ "+str(rmessage["date"])+" ]"+str(rmessage["uname"])+" : "+rmessage["message"])
         file.write("\n")
@@ -124,7 +124,7 @@ def main():
     dp.addHandler(CommandHandler("help", help))
 
     # on noncommand i.e message - echo the message on Telegram
-    dp.addHandler(MessageHandler([filters.TEXT],reply))
+    dp.addHandler(MessageHandler([Filters.text],reply))
 
     # log all errors
     dp.addErrorHandler(error)
